@@ -7,19 +7,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-/** Manage offline accounts: add, select, remove. */
+/** Manage accounts: sign in with Microsoft, select, remove. */
 public class AccountsView extends VBox {
 
     private final LauncherConfig config = LauncherConfig.get();
     private final VBox list = new VBox(8);
-    private final TextField nameField = new TextField();
     private final Runnable onMicrosoftLogin;
 
     public AccountsView(Runnable onMicrosoftLogin) {
@@ -34,40 +32,19 @@ public class AccountsView extends VBox {
         microsoft.getStyleClass().add("accent-btn");
         microsoft.setOnAction(e -> onMicrosoftLogin.run());
 
-        nameField.setPromptText("New offline username");
-        nameField.getStyleClass().add("text-field-dark");
-        nameField.setPrefWidth(220);
-        nameField.setOnAction(e -> addAccount());
-
-        Button add = new Button("Add offline");
-        add.getStyleClass().add("ghost-btn");
-        add.setOnAction(e -> addAccount());
-
-        HBox addRow = new HBox(10, nameField, add);
-        addRow.setAlignment(Pos.CENTER_LEFT);
-
         ScrollPane scroll = new ScrollPane(list);
         scroll.setFitToWidth(true);
         scroll.getStyleClass().add("page-scroll");
         VBox.setVgrow(scroll, Priority.ALWAYS);
 
-        getChildren().addAll(title, microsoft, addRow, scroll);
+        getChildren().addAll(title, microsoft, scroll);
         refresh();
-    }
-
-    private void addAccount() {
-        String name = nameField.getText().trim();
-        if (!name.isEmpty()) {
-            config.addOffline(name);
-            nameField.clear();
-            refresh();
-        }
     }
 
     private void refresh() {
         list.getChildren().clear();
         if (config.accounts.isEmpty()) {
-            Label empty = new Label("No accounts yet — add an offline username above.");
+            Label empty = new Label("No accounts yet — sign in with Microsoft above.");
             empty.getStyleClass().add("tagline");
             list.getChildren().add(empty);
             return;

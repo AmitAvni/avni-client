@@ -174,8 +174,7 @@ public final class MicrosoftAuth {
             }
             if (url.contains("minecraftservices") && r.body().contains("Invalid app registration")) {
                 throw new RuntimeException("This launcher's app ID isn't approved by Mojang yet. "
-                        + "New app IDs must be allow-listed at aka.ms/mce-reviewappid. "
-                        + "Use an offline account until it's approved.");
+                        + "New app IDs must be allow-listed at aka.ms/mce-reviewappid.");
             }
             throw new RuntimeException("Auth step failed (HTTP " + r.statusCode() + ")");
         }

@@ -229,7 +229,8 @@ public class VersionsView extends HBox {
         config.save();
         Account account = config.selectedAccount();
         if (account == null) {
-            account = config.addOffline("Player");
+            status.setText("Sign in with Microsoft in the Accounts tab first");
+            return;
         }
 
         launchBtn.setDisable(true);

@@ -150,7 +150,9 @@ public class HomeView extends BorderPane {
         }
         Account account = config.selectedAccount();
         if (account == null) {
-            account = config.addOffline("Player");
+            status.setText("Sign in with Microsoft first");
+            onManageAccounts.run();
+            return;
         }
 
         launchBtn.setDisable(true);

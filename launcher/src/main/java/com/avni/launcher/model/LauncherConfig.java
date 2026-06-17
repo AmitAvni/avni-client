@@ -71,10 +71,6 @@ public class LauncherConfig {
         return accounts.get(0);
     }
 
-    public Account addOffline(String name) {
-        return add(Account.offline(name));
-    }
-
     /** Adds (or replaces by uuid) an account and selects it. */
     public Account add(Account a) {
         accounts.removeIf(x -> x.uuid().equals(a.uuid()));
