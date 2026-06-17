@@ -14,6 +14,16 @@ The launcher signs players in with their own Microsoft account using the standar
 sign-in flow, solely to launch the game they own. It does not modify, resell, or proxy any
 Microsoft or Mojang services.
 
+## Screenshots
+
+| Launcher | Version picker |
+| :---: | :---: |
+| ![Launcher home](docs/launcher-home.png) | ![Version picker](docs/launcher-versions.png) |
+
+The custom in-game main menu:
+
+![Custom main menu](docs/title-screen.png)
+
 ## Features
 
 ### In-game
