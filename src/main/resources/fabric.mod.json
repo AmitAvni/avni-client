@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "avni-client",
+  "version": "${version}",
+  "name": "Avni Client",
+  "description": "Avni Client — a lightweight Fabric utility client. Adds zoom, fullbright, an FPS / coordinates / CPS HUD, a keystrokes overlay and an in-game configuration menu.",
+  "authors": [
+    "Avni Client"
+  ],
+  "contact": {
+    "homepage": "https://github.com/your-name/avni-client",
+    "sources": "https://github.com/your-name/avni-client",
+    "issues": "https://github.com/your-name/avni-client/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/avni-client/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.avni.client.AvniClient"
+    ]
+  },
+  "mixins": [
+    "avni-client.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*",
+    "sodium": "*",
+    "iris": "*"
+  }
+}

@@ -1,0 +1,51 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'com.avni'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = '21.0.4'
+    modules = ['javafx.controls']
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.11.0'
+}
+
+application {
+    mainClass = 'com.avni.launcher.AvniLauncher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+    options.encoding = 'UTF-8'
+}
+
+// Bundle the freshly built Avni mod jar so the launcher can drop it into the
+// game's mods folder. Depends on the root project's remapped jar.
+tasks.register('copyMod', Copy) {
+    dependsOn ':remapJar'
+    from(rootProject.tasks.named('remapJar'))
+    into layout.buildDirectory.dir('bundled-mods')
+    rename { 'avni-client.jar' }
+}
+
+// Put the bundled mod on the runtime classpath as /avni-client.jar so the
+// installer can extract it into the game's mods folder.
+processResources {
+    dependsOn 'copyMod'
+    from(layout.buildDirectory.dir('bundled-mods'))
+}

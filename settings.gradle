@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = uri('https://maven.fabricmc.net/')
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'avni-client'
+
+// The desktop launcher app (JavaFX). The mod stays at the root project; the
+// launcher bundles the mod's built jar and launches Minecraft with it.
+include 'launcher'

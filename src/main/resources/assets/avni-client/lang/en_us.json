@@ -1,0 +1,20 @@
+{
+  "key.category.avni-client.main": "Avni Client",
+  "key.avni-client.zoom": "Zoom (hold)",
+  "key.avni-client.fullbright": "Toggle Fullbright",
+  "key.avni-client.toggle_hud": "Toggle HUD",
+  "key.avni-client.config": "Open Avni Client Menu",
+  "key.avni-client.waypoints": "Open Waypoints",
+
+  "avni-client.menu.title": "Avni Client",
+  "avni-client.option.hud": "HUD",
+  "avni-client.option.fps": "FPS Counter",
+  "avni-client.option.coords": "Coordinates",
+  "avni-client.option.cps": "CPS Counter",
+  "avni-client.option.keystrokes": "Keystrokes",
+  "avni-client.option.watermark": "Watermark",
+  "avni-client.option.fullbright": "Fullbright",
+  "avni-client.option.done": "Done",
+  "avni-client.state.on": "ON",
+  "avni-client.state.off": "OFF"
+}
