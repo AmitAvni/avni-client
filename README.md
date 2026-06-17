@@ -22,7 +22,7 @@ Microsoft or Mojang services.
 
 The custom in-game main menu:
 
-![Custom main menu](docs/title-screen.png)
+![Custom main menu](docs/menu.png)
 
 ## Features
 
