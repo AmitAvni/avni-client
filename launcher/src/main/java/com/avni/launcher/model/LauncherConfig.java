@@ -45,6 +45,14 @@ public class LauncherConfig {
         if (instance.accounts == null) {
             instance.accounts = new ArrayList<>();
         }
+        // Offline accounts are no longer supported — drop any left by older versions.
+        if (instance.accounts.removeIf(a -> "offline".equals(a.type()))) {
+            if (instance.selectedUuid != null
+                    && instance.accounts.stream().noneMatch(a -> a.uuid().equals(instance.selectedUuid))) {
+                instance.selectedUuid = instance.accounts.isEmpty() ? null : instance.accounts.get(0).uuid();
+            }
+            instance.save();
+        }
     }
 
     public void save() {

@@ -33,9 +33,15 @@ public final class JavaRuntime {
             component = jv.get("component").getAsString();
             major = jv.get("majorVersion").getAsInt();
         }
-        // The launcher runs on JDK 21 — reuse it when that's what the game wants.
+        // The launcher runs on JDK 21 — reuse it when that's what the game wants,
+        // but only if it exposes a real `java` launcher. A jpackage-bundled
+        // runtime is stripped (boots via libjli, has no bin/java), so in the
+        // packaged app we fall through and download Mojang's runtime instead.
         if (major == ours) {
-            return Path.of(System.getProperty("java.home"), "bin", "java");
+            Path here = Path.of(System.getProperty("java.home"), "bin", "java");
+            if (Files.exists(here)) {
+                return here;
+            }
         }
 
         Path dir = LauncherPaths.ROOT.resolve("runtimes").resolve(component);

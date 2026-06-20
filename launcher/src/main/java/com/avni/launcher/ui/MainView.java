@@ -149,19 +149,11 @@ public class MainView extends StackPane {
         com.avni.launcher.model.Account account = com.avni.launcher.model.LauncherConfig.get().selectedAccount();
         String name = account == null ? "No account" : account.name();
 
-        StackPane avatar = new StackPane();
-        avatar.setMinSize(30, 30);
-        avatar.setMaxSize(30, 30);
-        avatar.getStyleClass().add("avatar");
-        int hue = Math.abs(name.hashCode()) % 360;
-        avatar.setStyle("-fx-background-color: hsb(" + hue + ", 55%, 70%);");
-        Label initial = new Label(name.substring(0, 1).toUpperCase());
-        initial.getStyleClass().add("avatar-initial");
-        avatar.getChildren().add(initial);
+        StackPane avatar = Avatar.of(account, 30);
 
         Label nameLabel = new Label(name);
         nameLabel.getStyleClass().add("user-name");
-        Label sub = new Label(account == null ? "tap Accounts" : "Offline");
+        Label sub = new Label(account == null ? "tap Accounts" : (account.isMicrosoft() ? "Microsoft" : "Offline"));
         sub.getStyleClass().add("user-sub");
         VBox info = new VBox(1, nameLabel, sub);
 

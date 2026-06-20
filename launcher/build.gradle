@@ -26,7 +26,9 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.avni.launcher.AvniLauncher'
+    // Plain wrapper (not an Application subclass) so the packaged classpath
+    // build starts without a JavaFX module-path setup. See Launcher.java.
+    mainClass = 'com.avni.launcher.Launcher'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -48,4 +50,37 @@ tasks.register('copyMod', Copy) {
 processResources {
     dependsOn 'copyMod'
     from(layout.buildDirectory.dir('bundled-mods'))
+}
+
+// Build a self-contained Linux app-image (bundled JRE + all jars + a native
+// launcher binary) using the JDK's jpackage. Output:
+//   launcher/build/jpackage/AvniClient/bin/AvniClient
+// Run with `./gradlew :launcher:jpackage`. Requires jpackage on the toolchain
+// JDK (Java 14+). installDist provides the lib/ folder of all runtime jars,
+// including the platform-specific JavaFX natives.
+tasks.register('jpackage', Exec) {
+    dependsOn 'installDist'
+    def javaHome = System.getenv('JAVA_HOME') ?: System.getProperty('java.home')
+    def libDir = layout.buildDirectory.dir('install/launcher/lib').get().asFile
+    def outDir = layout.buildDirectory.dir('jpackage').get().asFile
+
+    doFirst {
+        outDir.deleteDir()
+        outDir.mkdirs()
+    }
+
+    commandLine "${javaHome}/bin/jpackage",
+            '--type', 'app-image',
+            '--name', 'AvniClient',
+            '--app-version', project.version,
+            '--input', libDir.absolutePath,
+            '--main-jar', "launcher-${project.version}.jar",
+            '--main-class', 'com.avni.launcher.Launcher',
+            '--dest', outDir.absolutePath,
+            '--vendor', 'Avni',
+            '--java-options', '-Xms256m'
+
+    doLast {
+        println "App-image built at: ${outDir}/AvniClient/bin/AvniClient"
+    }
 }

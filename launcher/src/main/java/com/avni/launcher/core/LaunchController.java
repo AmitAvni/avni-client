@@ -10,7 +10,7 @@ import javafx.application.Platform;
 
 /**
  * Orchestrates the real launch pipeline: install Minecraft + Fabric + the Avni
- * mod, then spawn the game.
+ * mod, refresh the account's Microsoft token, then spawn the game.
  */
 public class LaunchController {
 

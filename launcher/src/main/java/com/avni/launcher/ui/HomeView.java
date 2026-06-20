@@ -124,15 +124,7 @@ public class HomeView extends BorderPane {
         Account selected = config.selectedAccount();
         String name = selected == null ? "Add an account" : selected.name();
 
-        StackPane avatar = new StackPane();
-        avatar.setMinSize(26, 26);
-        avatar.setMaxSize(26, 26);
-        avatar.getStyleClass().add("avatar");
-        int hue = Math.abs(name.hashCode()) % 360;
-        avatar.setStyle("-fx-background-color: hsb(" + hue + ", 55%, 70%);");
-        Label initial = new Label(name.substring(0, 1).toUpperCase());
-        initial.getStyleClass().add("avatar-initial");
-        avatar.getChildren().add(initial);
+        StackPane avatar = Avatar.of(selected, 26);
 
         Label label = new Label(name);
         label.getStyleClass().add("chip-text");

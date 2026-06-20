@@ -33,7 +33,7 @@ public class GameLauncher {
         cmd.add(classpath);
         cmd.add(spec.mainClass());
 
-        // Minimal game arguments — enough to reach the menu and play (offline).
+        // Minimal game arguments — username, uuid, token and userType for online play.
         cmd.add("--username");
         cmd.add(account.name());
         cmd.add("--version");

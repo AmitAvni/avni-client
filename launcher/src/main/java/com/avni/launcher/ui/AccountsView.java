@@ -89,20 +89,7 @@ public class AccountsView extends VBox {
             refresh();
         });
 
-        card.getChildren().addAll(avatar(account.name()), info, spacer, select, remove);
+        card.getChildren().addAll(Avatar.of(account, 38), info, spacer, select, remove);
         return card;
-    }
-
-    private StackPane avatar(String name) {
-        StackPane p = new StackPane();
-        p.setMinSize(38, 38);
-        p.setMaxSize(38, 38);
-        p.getStyleClass().add("avatar");
-        int hue = Math.abs(name.hashCode()) % 360;
-        p.setStyle("-fx-background-color: hsb(" + hue + ", 55%, 70%);");
-        Label initial = new Label(name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
-        initial.getStyleClass().add("avatar-initial");
-        p.getChildren().add(initial);
-        return p;
     }
 }
