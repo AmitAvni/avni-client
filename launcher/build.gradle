@@ -61,6 +61,8 @@ processResources {
 tasks.register('jpackage', Exec) {
     dependsOn 'installDist'
     def javaHome = System.getenv('JAVA_HOME') ?: System.getProperty('java.home')
+    def isWindows = System.getProperty('os.name').toLowerCase().contains('win')
+    def jpackageBin = "${javaHome}/bin/jpackage" + (isWindows ? '.exe' : '')
     def libDir = layout.buildDirectory.dir('install/launcher/lib').get().asFile
     def outDir = layout.buildDirectory.dir('jpackage').get().asFile
 
@@ -69,7 +71,7 @@ tasks.register('jpackage', Exec) {
         outDir.mkdirs()
     }
 
-    commandLine "${javaHome}/bin/jpackage",
+    commandLine jpackageBin,
             '--type', 'app-image',
             '--name', 'AvniClient',
             '--app-version', project.version,
@@ -81,6 +83,8 @@ tasks.register('jpackage', Exec) {
             '--java-options', '-Xms256m'
 
     doLast {
-        println "App-image built at: ${outDir}/AvniClient/bin/AvniClient"
+        def launcher = isWindows ? "${outDir}/AvniClient/AvniClient.exe"
+                                 : "${outDir}/AvniClient/bin/AvniClient"
+        println "App-image built at: ${launcher}"
     }
 }
