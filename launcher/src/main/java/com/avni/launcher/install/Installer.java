@@ -2,6 +2,7 @@ package com.avni.launcher.install;
 
 import com.avni.launcher.core.LauncherPaths;
 import com.avni.launcher.util.Http;
+import com.avni.launcher.util.Platform;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -112,8 +113,8 @@ public class Installer {
             // legacy-style natives (classifiers + "natives" map)
             if (downloads != null && downloads.has("classifiers") && lib.has("natives")) {
                 JsonObject natives = lib.getAsJsonObject("natives");
-                if (natives.has("linux")) {
-                    String key = natives.get("linux").getAsString();
+                if (natives.has(Platform.mojangOsName())) {
+                    String key = natives.get(Platform.mojangOsName()).getAsString().replace("${arch}", "64");
                     JsonObject classifiers = downloads.getAsJsonObject("classifiers");
                     if (classifiers.has(key)) {
                         JsonObject art = classifiers.getAsJsonObject(key);
@@ -309,7 +310,7 @@ public class Installer {
             JsonObject r = re.getAsJsonObject();
             boolean matches = true;
             if (r.has("os") && r.getAsJsonObject("os").has("name")) {
-                matches = r.getAsJsonObject("os").get("name").getAsString().equals("linux");
+                matches = r.getAsJsonObject("os").get("name").getAsString().equals(Platform.mojangOsName());
             }
             if (matches) {
                 allowed = r.get("action").getAsString().equals("allow");

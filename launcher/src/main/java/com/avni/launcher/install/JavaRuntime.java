@@ -2,6 +2,7 @@ package com.avni.launcher.install;
 
 import com.avni.launcher.core.LauncherPaths;
 import com.avni.launcher.util.Http;
+import com.avni.launcher.util.Platform;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,25 +39,26 @@ public final class JavaRuntime {
         // runtime is stripped (boots via libjli, has no bin/java), so in the
         // packaged app we fall through and download Mojang's runtime instead.
         if (major == ours) {
-            Path here = Path.of(System.getProperty("java.home"), "bin", "java");
+            Path here = Path.of(System.getProperty("java.home"), "bin", Platform.javaExe());
             if (Files.exists(here)) {
                 return here;
             }
         }
 
         Path dir = LauncherPaths.ROOT.resolve("runtimes").resolve(component);
-        Path javaBin = dir.resolve("bin").resolve("java");
+        Path javaBin = dir.resolve("bin").resolve(Platform.javaExe());
         if (Files.exists(javaBin)) {
             return javaBin;
         }
 
         progress.update(-1, "Downloading Java " + major + " runtime…");
+        String platformKey = Platform.runtimePlatform();
         JsonObject all = JsonParser.parseString(Http.getString(ALL)).getAsJsonObject();
-        JsonObject linux = all.getAsJsonObject("linux");
-        if (linux == null || !linux.has(component) || linux.getAsJsonArray(component).isEmpty()) {
-            throw new IOException("No Java runtime '" + component + "' available for linux");
+        JsonObject platform = all.getAsJsonObject(platformKey);
+        if (platform == null || !platform.has(component) || platform.getAsJsonArray(component).isEmpty()) {
+            throw new IOException("No Java runtime '" + component + "' available for " + platformKey);
         }
-        String manifestUrl = linux.getAsJsonArray(component).get(0).getAsJsonObject()
+        String manifestUrl = platform.getAsJsonArray(component).get(0).getAsJsonObject()
                 .getAsJsonObject("manifest").get("url").getAsString();
         JsonObject files = JsonParser.parseString(Http.getString(manifestUrl)).getAsJsonObject()
                 .getAsJsonObject("files");
